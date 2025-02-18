@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {    
+    [SerializeField] WeaponSO WeaponSO;
     [SerializeField] Animator FireAnim;
     [SerializeField] string  SHOOT_String;
-    [SerializeField] float WeaponDistance = 2000.0f;
-    [SerializeField] float RapidSpeed = 0.2f;
-    [SerializeField] int DamageAmount = 10;
-    
+    // [SerializeField] 
+
     StarterAssetsInputs Input;
     GameObject RootObj;
+    GameObject CurrentWeaponMesh;
+    ParticleSystem FireVFX;
+
     bool bFire = false;
 
 
@@ -20,6 +22,7 @@ public class Weapon : MonoBehaviour
     {
         RootObj = Camera.main.gameObject;
         Input = GetComponentInParent<StarterAssetsInputs>();
+        InitWeapon();
     }
 
     void Update()
@@ -30,17 +33,33 @@ public class Weapon : MonoBehaviour
             StartCoroutine(Fire());
         }
     }
-
-    public IEnumerator Fire()
+    
+    void InitWeapon()
     {
+        CurrentWeaponMesh = Instantiate(WeaponSO.WeaponMesh, transform.position, transform.rotation);
+        FireVFX = GetComponentInChildren<ParticleSystem>();
+    }
+
+    void SwitchWeapon(WeaponSO weaponSO)
+    {
+        this.WeaponSO = weaponSO;
+
+        Destroy(CurrentWeaponMesh);
+        InitWeapon();
+    }
+
+    IEnumerator Fire()
+    {
+        FireVFX.Play();
         FireAnim.Play(SHOOT_String, 0, 0.0f);
 
         RaycastHit HitResult;
-        if(Physics.Raycast(RootObj.transform.position, RootObj.transform.forward, out HitResult, WeaponDistance))
+        if(Physics.Raycast(RootObj.transform.position, RootObj.transform.forward, out HitResult, WeaponSO.WeaponDistance))
         {
+            Instantiate(WeaponSO.HitVFX, HitResult.point, Quaternion.identity);
             HitEnemy(HitResult);
         }
-        yield return new WaitForSeconds(RapidSpeed);
+        yield return new WaitForSeconds(WeaponSO.RapidSpeed);
         bFire = false;
     }
 
@@ -49,8 +68,6 @@ public class Weapon : MonoBehaviour
         Enemy enemy = HitResult.collider.GetComponentInParent<Enemy>();
         if(!enemy) return;
         
-        Debug.Log("HitEnemy");
-
-        enemy.TakeDamage(DamageAmount);
+        enemy.TakeDamage(WeaponSO.DamageAmount);
     }
 }
