@@ -22,7 +22,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: FX_Base
   m_Shader: {fileID: 4800000, guid: b7839dad95683814aa64166edc107ae2, type: 3}
-  m_Parent: {fileID: 2100000, guid: b1f9043d64ff91d4d912e75570da245f, type: 2}
+  m_Parent: {fileID: 2100000, guid: 9fb7dfd84a1b5a54483ce106c6d65e44, type: 2}
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords:
   - _EMISSION
