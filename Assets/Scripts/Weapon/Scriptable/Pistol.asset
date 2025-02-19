@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponMesh: {fileID: 5557035402006348894, guid: 3693f46b12587764193b43eb5d4a8c7c, type: 3}
   HitVFX: {fileID: 6411712501238864351, guid: c70bf26f4cb7f43469eeb496e60f4926, type: 3}
+  bZoom: 0
   WeaponDistance: 2000
   RapidSpeed: 0.6
+  ZoomAngle: 20
+  ZoomRotationSpeed: 5
   DamageAmount: 5
+  DefaultAmmo: 20
